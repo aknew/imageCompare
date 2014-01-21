@@ -5,7 +5,7 @@
      </head> 
      <body>
          <form>
-               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text">
+               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text"> <input id="btn_imgurl1" type="button" value='Загрузить'>
          </form>
          <canvas id="canvas_img1">Обновите браузер</canvas>
 	     <script>
@@ -43,11 +43,17 @@
 			function handleFileSelect(evt, img) {
 			     var files = evt.target.files;
 			     var reader = new FileReader();
-                 reader.onload = function (e){img.src = e.target.result;};
+			     reader.img = img;
+                 reader.onload = function (e){ e.target.img.src = e.target.result;};
                  reader.readAsDataURL(files[0]);
 			 }
 
+			function loadURL(inputId, img){ 
+				img.src = document.getElementById(inputId).value;
+			}
+
 			 document.getElementById('imgfile1').addEventListener('change', function(e){handleFileSelect(e,img1)}, false);
+			 document.getElementById('btn_imgurl1').addEventListener('click', function(e){loadURL('imgurl1',img1)}, false);
 		 </script>
      </body>
 </html>
