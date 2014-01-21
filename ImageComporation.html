@@ -18,6 +18,9 @@
 	         <div id="drop_zone2">Drop a file here</div>
 	         <canvas id="canvas_img2">Обновите браузер</canvas>
          </div>
+         <div>
+	         <canvas id="result_canvas">Обновите браузер</canvas>
+         </div>
 	     <script>
 			function drawImage(canvasName, img){
 				var canvas = document.getElementById(canvasName);
@@ -94,6 +97,70 @@
 			 dropZone = document.getElementById('drop_zone2');
 			 dropZone.addEventListener('dragover', handleDragOver, false);
 			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img2)}, false);
+
+			  function tryDrawResult(){
+
+               		 var canvas = document.getElementById("result_canvas");
+                     canvas.width=img1.width*1.2; // some reserve size
+                     canvas.height=img1.height*1.2;
+
+                     var ctx = canvas.getContext('2d');
+                     ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+
+                    if (img1.points.length==3 && img2.points.length==3) {
+
+                         ctx.drawImage(img1, 0, 0);
+                         ctx.save();
+
+                        
+                         //ctx.setTransform(sc, b, c, sc, e, f);
+
+                         //draw img2 with empty parts (like mosaic)
+                         rowCount = 5;
+
+                         dx = img2.width/rowCount;
+
+                         for (var x = 0; x <= img2.width; x+=dx*2) {
+                         	firstElem = 0;
+                         	for (var y = firstElem; y <= img2.height; y+=dx*2) {
+                         		ctx.drawImage(img2, x, y, dx, dx, x, y, dx, dx);
+                         	}
+                         	firstElem==dx?firstElem=0:firstElem=dx;
+                         };
+
+                         ctx.restore();
+                    };
+               }
+
+			 function getMousePos(canvas, evt) {
+                  var rect = canvas.getBoundingClientRect();
+                  return {
+                    x: evt.clientX - rect.left,
+                    y: evt.clientY - rect.top
+                  };
+                }
+
+            var canvas1 = document.getElementById('canvas_img1');
+
+            canvas1.addEventListener('mouseup', function(evt) {
+              if (img1.points.length==3)
+                   return;  
+              var mousePos = getMousePos(canvas1, evt);
+              img1.points.push(mousePos);
+              drawImage("canvas_img1",img1);
+              tryDrawResult();
+            }, false);
+
+            var canvas2 = document.getElementById('canvas_img2');
+
+            canvas2.addEventListener('mouseup', function(evt) {
+              if (img2.points.length==3)
+                   return;  
+              var mousePos = getMousePos(canvas2, evt);
+              img2.points.push(mousePos);
+              drawImage("canvas_img2",img2);
+              tryDrawResult();
+            }, false);
 
 		 </script>
      </body>
