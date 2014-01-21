@@ -4,10 +4,18 @@
           <title>Сравнение картинок</title>
      </head> 
      <body>
-         <form>
-               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text"> <input id="btn_imgurl1" type="button" value='Загрузить'>
-         </form>
-         <canvas id="canvas_img1">Обновите браузер</canvas>
+         <div>
+	         <form>
+	               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text"> <input id="btn_imgurl1" type="button" value='Загрузить'>
+	         </form>
+	         <canvas id="canvas_img1">Обновите браузер</canvas>
+         </div>
+         <div>
+	         <form>
+	               <input id="imgfile2" type="file"> or insert URL <input id="imgurl2" type="text"> <input id="btn_imgurl2" type="button" value='Загрузить'>
+	         </form>
+	         <canvas id="canvas_img2">Обновите браузер</canvas>
+         </div>
 	     <script>
 			function drawImage(canvasName, img){
 				var canvas = document.getElementById(canvasName);
@@ -39,6 +47,12 @@
 										dropResults(img1); 
 										drawImage('canvas_img1',img1); 
 									};
+
+			var img2 = new Image;
+			img2.onload = function(e){ 
+										dropResults(img2); 
+										drawImage('canvas_img2',img2); 
+									};
 									
 			function handleFileSelect(evt, img) {
 			     var files = evt.target.files;
@@ -54,6 +68,8 @@
 
 			 document.getElementById('imgfile1').addEventListener('change', function(e){handleFileSelect(e,img1)}, false);
 			 document.getElementById('btn_imgurl1').addEventListener('click', function(e){loadURL('imgurl1',img1)}, false);
+			 document.getElementById('imgfile2').addEventListener('change', function(e){handleFileSelect(e,img2)}, false);
+			 document.getElementById('btn_imgurl2').addEventListener('click', function(e){loadURL('imgurl2',img2)}, false);
 		 </script>
      </body>
 </html>
