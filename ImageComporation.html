@@ -1,0 +1,53 @@
+<html> 
+     <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+          <title>Сравнение картинок</title>
+     </head> 
+     <body>
+         <form>
+               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text">
+         </form>
+         <canvas id="canvas_img1">Обновите браузер</canvas>
+	     <script>
+			function drawImage(canvasName, img){
+				var canvas = document.getElementById(canvasName);
+				canvas.width=img.width;
+				canvas.height=img.height;
+				var ctx = canvas.getContext('2d');
+				ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+				ctx.drawImage(img, 0, 0);
+
+				var colors=["#f00", "#00f" , "#0f0" ];
+
+				for (var i = 0; i < img.points.length; i++) {
+					 ctx.beginPath();
+					 ctx.fillStyle = colors[i];
+					 ctx.arc(img.points[i].x, img.points[i].y, 10, 0, Math.PI*2, true);
+
+					 ctx.fill();
+					 ctx.closePath();
+				}
+			}
+
+			function dropResults(img){
+				//drop pivots and result picture
+				img.points = new Array(); 
+			}
+
+			var img1 = new Image;
+			img1.onload = function(e){ 
+										dropResults(img1); 
+										drawImage('canvas_img1',img1); 
+									};
+									
+			function handleFileSelect(evt, img) {
+			     var files = evt.target.files;
+			     var reader = new FileReader();
+                 reader.onload = function (e){img.src = e.target.result;};
+                 reader.readAsDataURL(files[0]);
+			 }
+
+			 document.getElementById('imgfile1').addEventListener('change', function(e){handleFileSelect(e,img1)}, false);
+		 </script>
+     </body>
+</html>
