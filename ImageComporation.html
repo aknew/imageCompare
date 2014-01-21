@@ -8,12 +8,14 @@
 	         <form>
 	               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text"> <input id="btn_imgurl1" type="button" value='Загрузить'>
 	         </form>
+	         <div id="drop_zone1">Drop a file here</div>
 	         <canvas id="canvas_img1">Обновите браузер</canvas>
          </div>
          <div>
 	         <form>
 	               <input id="imgfile2" type="file"> or insert URL <input id="imgurl2" type="text"> <input id="btn_imgurl2" type="button" value='Загрузить'>
 	         </form>
+	         <div id="drop_zone2">Drop a file here</div>
 	         <canvas id="canvas_img2">Обновите браузер</canvas>
          </div>
 	     <script>
@@ -54,22 +56,45 @@
 										drawImage('canvas_img2',img2); 
 									};
 									
-			function handleFileSelect(evt, img) {
-			     var files = evt.target.files;
+			function handleFileSelect(file, img) {
 			     var reader = new FileReader();
 			     reader.img = img;
                  reader.onload = function (e){ e.target.img.src = e.target.result;};
-                 reader.readAsDataURL(files[0]);
+                 reader.readAsDataURL(file);
 			 }
 
 			function loadURL(inputId, img){ 
 				img.src = document.getElementById(inputId).value;
 			}
 
-			 document.getElementById('imgfile1').addEventListener('change', function(e){handleFileSelect(e,img1)}, false);
+			function handleFileDrop(evt,img) {
+			    evt.stopPropagation();
+			    evt.preventDefault();
+
+			    var files = evt.dataTransfer.files; // FileList object.
+
+			    handleFileSelect(files[0],img);
+			  }
+
+			  function handleDragOver(evt) {
+			    evt.stopPropagation();
+			    evt.preventDefault();
+			    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+			  }
+
+			 document.getElementById('imgfile1').addEventListener('change', function(e){var files = e.target.files; handleFileSelect(files[0],img1)}, false);
 			 document.getElementById('btn_imgurl1').addEventListener('click', function(e){loadURL('imgurl1',img1)}, false);
-			 document.getElementById('imgfile2').addEventListener('change', function(e){handleFileSelect(e,img2)}, false);
+			 document.getElementById('imgfile2').addEventListener('change', function(e){var files = e.target.files; handleFileSelect(files[0],img2)}, false);
 			 document.getElementById('btn_imgurl2').addEventListener('click', function(e){loadURL('imgurl2',img2)}, false);
+
+			 var dropZone = document.getElementById('drop_zone1');
+			 dropZone.addEventListener('dragover', handleDragOver, false);
+			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img1)}, false);
+
+			 dropZone = document.getElementById('drop_zone2');
+			 dropZone.addEventListener('dragover', handleDragOver, false);
+			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img2)}, false);
+
 		 </script>
      </body>
 </html>
