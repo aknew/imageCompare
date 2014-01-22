@@ -2,6 +2,7 @@
      <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           <title>Сравнение картинок</title>
+          <script src="ualgebra.js"> </script>
      </head> 
      <body>
          <div>
@@ -112,8 +113,35 @@
                          ctx.drawImage(img1, 0, 0);
                          ctx.save();
 
-                        
-                         //ctx.setTransform(sc, b, c, sc, e, f);
+                        A = [
+                             [img2.points[0].x, img2.points[0].y, 1],
+                             [img2.points[1].x, img2.points[1].y, 1],
+                             [img2.points[2].x, img2.points[2].y, 1]
+                             ];
+                       
+
+                        b = [
+                             [img1.points[0].x],
+                             [img1.points[1].x],
+                             [img1.points[2].x]
+                            ];
+
+
+                        Ai = inverseMatrix(A);
+                        tvx = matrixMultiply(Ai,b);
+
+                        b = [
+                             [img1.points[0].y],
+                             [img1.points[1].y],
+                             [img1.points[2].y] 
+                            ];
+
+                        // Ai = inverseMatrix(A);
+                        tvy = matrixMultiply(Ai,b);
+
+                        console.log(tvx);
+                        console.log(tvy);
+                        ctx.setTransform(tvx[0], tvy[0], tvx[1], tvy[1], tvx[2], tvy[2]);
 
                          //draw img2 with empty parts (like mosaic)
                          rowCount = 5;
