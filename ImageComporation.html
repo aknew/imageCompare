@@ -27,7 +27,9 @@
                    <input type="radio" name="resultStyle" value="Transparency" onclick ="tryDrawResult()">Transparency<br>
                    Style parameter (alpha in range 0-1 or number of pieces in range 5-15):<br>
                    <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()"><br>
-                   <input id="downJPEG" type="button" value='Save as jpeg' onclick="downloadJPEG()">
+                   <!--XXX: there is code like in img1.onload, may be I chould fix it -->
+                   <input id="dropMarkers" type="button" value="Drop markers" onclick="img1.points = new Array(); drawImage('canvas_img1',img1); img2.points = new Array(); drawImage('canvas_img2',img2);  tryDrawResult();">
+                   <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
 	         </form>
 	         <canvas id="result_canvas">Обновите браузер</canvas>
          </div>
@@ -121,6 +123,11 @@
 
                     if (img1.points.length==3 && img2.points.length==3) {
 
+                    	 dx = img1.width*0.1;
+                    	 dy = img1.height*0.1;
+
+                    	 ctx.translate(dx,dy);
+
                          ctx.drawImage(img1, 0, 0);
                          ctx.save();
 
@@ -152,7 +159,7 @@
 
                         console.log(tvx);
                         console.log(tvy);
-                        ctx.setTransform(tvx[0], tvy[0], tvx[1], tvy[1], tvx[2], tvy[2]);
+                        ctx.transform(tvx[0], tvy[0], tvx[1], tvy[1], tvx[2], tvy[2]);
 
 
                         style = document.getElementsByName("resultStyle");
@@ -170,7 +177,6 @@
 	                         		ctx.drawImage(img2, x, y, dx, dx, x, y, dx, dx);
 	                         	}
 	                         	isOdd=!isOdd;
-	                         	console.log(isOdd)
 	                         };
                         }
                         else {
