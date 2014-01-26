@@ -1,3 +1,4 @@
+<!DOCTYPE html> 
 <html> 
      <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -25,8 +26,8 @@
 	               <input type="radio" name="resultStyle" value="Mosaic" checked onclick ="tryDrawResult()">Mosaic
                    <input type="radio" name="resultStyle" value="Transparency" onclick ="tryDrawResult()">Transparency<br>
                    Style parameter (alpha in range 0-1 or number of pieces in range 5-15):<br>
-                   <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()">
-
+                   <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()"><br>
+                   <input id="downJPEG" type="button" value='Save as jpeg' onclick="downloadJPEG()">
 	         </form>
 	         <canvas id="result_canvas">Обновите браузер</canvas>
          </div>
@@ -209,6 +210,18 @@
               drawImage("canvas_img2",img2);
               tryDrawResult();
             }, false);
+
+
+            function downloadJPEG(){
+
+            	var canvas = document.getElementById("result_canvas");
+            	var win = window.open(),
+	            img = canvas.toDataURL("image/jpeg")
+
+				win.document.body.innerHTML= "<img src='" + img + "'></img>" // With correct delimiters
+				win.document.close()
+
+            }
 
 		 </script>
      </body>
