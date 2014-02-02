@@ -112,6 +112,38 @@
 			 dropZone.addEventListener('dragover', handleDragOver, false);
 			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img2)}, false);
 
+			 function countCoef(points1,points2){
+
+			 	var coef = new Object;
+
+			 	A = [
+                     [points2[0].x, points2[0].y, 1],
+                     [points2[1].x, points2[1].y, 1],
+                     [points2[2].x, points2[2].y, 1]
+                     ];
+
+                Ai = inverseMatrix(A);
+
+                b = [
+                     [points1[0].x],
+                     [points1[1].x],
+                     [points1[2].x]
+                    ];
+
+                coef.tvx = matrixMultiply(Ai,b);
+
+                b = [
+                     [points1[0].y],
+                     [points1[1].y],
+                     [points1[2].y] 
+                    ];
+
+                coef.tvy = matrixMultiply(Ai,b);
+
+                return coef;
+
+			 }
+
 			  function tryDrawResult(){
 
                		 var canvas = document.getElementById("result_canvas");
@@ -131,35 +163,9 @@
                          ctx.drawImage(img1, 0, 0);
                          ctx.save();
 
-                        A = [
-                             [img2.points[0].x, img2.points[0].y, 1],
-                             [img2.points[1].x, img2.points[1].y, 1],
-                             [img2.points[2].x, img2.points[2].y, 1]
-                             ];
-                       
+                         coef = countCoef(img1.points,img2.points);
 
-                        b = [
-                             [img1.points[0].x],
-                             [img1.points[1].x],
-                             [img1.points[2].x]
-                            ];
-
-
-                        Ai = inverseMatrix(A);
-                        tvx = matrixMultiply(Ai,b);
-
-                        b = [
-                             [img1.points[0].y],
-                             [img1.points[1].y],
-                             [img1.points[2].y] 
-                            ];
-
-                        // Ai = inverseMatrix(A);
-                        tvy = matrixMultiply(Ai,b);
-
-                        console.log(tvx);
-                        console.log(tvy);
-                        ctx.transform(tvx[0], tvy[0], tvx[1], tvy[1], tvx[2], tvy[2]);
+                        ctx.transform(coef.tvx[0], coef.tvy[0], coef.tvx[1], coef.tvy[1], coef.tvx[2], coef.tvy[2]);
 
 
                         style = document.getElementsByName("resultStyle");
