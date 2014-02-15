@@ -74,10 +74,10 @@
 									};
 									
 			function handleFileSelect(file, img) {
-			     var reader = new FileReader();
-			     reader.img = img;
-                 reader.onload = function (e){ e.target.img.src = e.target.result;};
-                 reader.readAsDataURL(file);
+
+				var URL = window.webkitURL || window.URL;
+			    var url = URL.createObjectURL(file);
+			    img.src = url;
 			 }
 
 			function loadURL(inputId, img){ 
