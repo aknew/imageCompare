@@ -104,14 +104,13 @@ function countCoef(points1, points2) {
 
 function tryDrawResult() {
 
-    var canvas = document.getElementById("result_canvas");
     canvas.width = img1.width * 1.2; // some reserve size
     canvas.height = img1.height * 1.2;
 
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    if (typeof img1.points === "undefined" || typeof img1.points === "undefined") {
+    if (typeof img1.points === "undefined" || typeof img2.points === "undefined") {
         return;
     }
 
@@ -126,7 +125,7 @@ function tryDrawResult() {
 
         ctx.drawImage(img1, 0, 0);
 
-
+        //XXX: unnececary count this coef each time when we draw image
         minArrayLength = Math.min(img2.points.length, img1.points.length);
         combinationsNumber = 0;
         coef = new Object;
@@ -223,12 +222,12 @@ function Selection(x, y, w, h) {
 // define Selection draw method
 Selection.prototype.draw = function () {
 
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = '#f00';
     ctx.lineWidth = 2;
     ctx.strokeRect(this.x, this.y, this.w, this.h);
 
     // draw resize cubes
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#f00';
     ctx.fillRect(this.x - this.iCSize[0], this.y - this.iCSize[0], this.iCSize[0] * 2, this.iCSize[0] * 2);
     ctx.fillRect(this.x + this.w - this.iCSize[1], this.y - this.iCSize[1], this.iCSize[1] * 2, this.iCSize[1] * 2);
     ctx.fillRect(this.x + this.w - this.iCSize[2], this.y + this.h - this.iCSize[2], this.iCSize[2] * 2, this.iCSize[2] * 2);
@@ -297,7 +296,7 @@ $(function () {
     ctx = canvas.getContext('2d');
 
     // create initial selection
-    theSelection = new Selection(200, 200, 200, 200);
+    theSelection = new Selection(10, 10, 200, 200);
 
     $('#result_canvas').mousemove(function (e) { // binding mouse move event
         var canvasOffset = $(canvas).offset();
@@ -432,7 +431,6 @@ $(function () {
 });
 
 function getResults() {
-    var canvas = document.getElementById("result_canvas");
     var temp_ctx, temp_canvas;
     temp_canvas = document.createElement('canvas');
     temp_ctx = temp_canvas.getContext('2d');
