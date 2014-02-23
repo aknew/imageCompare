@@ -1,270 +1,50 @@
-<!DOCTYPE html> 
-<html> 
-     <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-          <title>Image compare</title>
-          <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	      <script src="js/selection.js"></script>
-          <script src="ualgebra.js"> </script>
-     </head> 
-     <body>
-         <div>
-	         <form>
-	               <input id="imgfile1" type="file"> or insert URL <input id="imgurl1" type="text"> <input id="btn_imgurl1" type="button" value='Загрузить'>
-	         </form>
-	         <div id="drop_zone1">Drop a file here</div>
-	         <canvas id="canvas_img1">Обновите браузер</canvas>
-         </div>
-         <div>
-	         <form>
-	               <input id="imgfile2" type="file"> or insert URL <input id="imgurl2" type="text"> <input id="btn_imgurl2" type="button" value='Загрузить'>
-	         </form>
-	         <div id="drop_zone2">Drop a file here</div>
-	         <canvas id="canvas_img2">Обновите браузер</canvas>
-         </div>
-         <div>
-             <form>
-	               Result style:<br>
-	               <input type="radio" name="resultStyle" value="Mosaic" checked onclick ="tryDrawResult()">Mosaic
-                   <input type="radio" name="resultStyle" value="Transparency" onclick ="tryDrawResult()">Transparency<br>
-                   Style parameter (alpha in range 0-1 or number of pieces in range 5-15):<br>
-                   <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()"><br>
-                   <!--XXX: there is code like in img1.onload, may be I chould fix it -->
-                   <input id="dropMarkers" type="button" value="Drop markers" onclick="img1.points = new Array(); drawImage('canvas_img1',img1); img2.points = new Array(); drawImage('canvas_img2',img2);  tryDrawResult();">
-                   <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
-	         </form>
-	         <canvas id="result_canvas">Обновите браузер</canvas>
-         </div>
-	     <script>
-			function drawImage(canvasName, img){
-				var canvas = document.getElementById(canvasName);
-				canvas.width=img.width;
-				canvas.height=img.height;
-				var ctx = canvas.getContext('2d');
-				ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-				ctx.drawImage(img, 0, 0);
+<!DOCTYPE html>
+<html>
 
-				var colors=["#f00", "#00f" , "#0f0", "#ff0", "#0ff" , "#f0f"  ];
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Image compare</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/mainScript.js"></script>
+    <script src="js/ualgebra.js">
+    </script>
+</head>
 
-				for (var i = 0; i < img.points.length; i++) {
-					 ctx.beginPath();
-					 ctx.fillStyle = colors[i];
-					 ctx.arc(img.points[i].x, img.points[i].y, 10, 0, Math.PI*2, true);
+<body>
+    <div>
+        <form>
+            <input id="imgfile1" type="file">or insert URL
+            <input id="imgurl1" type="text">
+            <input id="btn_imgurl1" type="button" value='Загрузить'>
+        </form>
+        <div id="drop_zone1">Drop a file here</div>
+        <canvas id="canvas_img1">Обновите браузер</canvas>
+    </div>
+    <div>
+        <form>
+            <input id="imgfile2" type="file">or insert URL
+            <input id="imgurl2" type="text">
+            <input id="btn_imgurl2" type="button" value='Загрузить'>
+        </form>
+        <div id="drop_zone2">Drop a file here</div>
+        <canvas id="canvas_img2">Обновите браузер</canvas>
+    </div>
+    <div>
+        <form>
+            Result style:
+            <br>
+            <input type="radio" name="resultStyle" value="Mosaic" checked onclick="tryDrawResult()">Mosaic
+            <input type="radio" name="resultStyle" value="Transparency" onclick="tryDrawResult()">Transparency
+            <br>Style parameter (alpha in range 0-1 or number of pieces in range 5-15):
+            <br>
+            <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()">
+            <br>
+            <!--XXX: there is code like in img1.onload, may be I chould fix it -->
+            <input id="dropMarkers" type="button" value="Drop markers" onclick="img1.points = new Array(); drawImage('canvas_img1',img1); img2.points = new Array(); drawImage('canvas_img2',img2);  tryDrawResult();">
+            <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
+        </form>
+        <canvas id="result_canvas">Обновите браузер</canvas>
+    </div>
+</body>
 
-					 ctx.fill();
-					 ctx.closePath();
-				}
-			}
-
-			function dropResults(img){
-				//drop pivots and result picture
-				img.points = new Array();
-				tryDrawResult();
-
-			}
-
-			var img1 = new Image;
-			img1.onload = function(e){ 
-										dropResults(img1); 
-										drawImage('canvas_img1',img1); 
-									};
-
-			var img2 = new Image;
-			img2.onload = function(e){ 
-										dropResults(img2); 
-										drawImage('canvas_img2',img2); 
-									};
-									
-			function handleFileSelect(file, img) {
-
-				var URL = window.webkitURL || window.URL;
-			    var url = URL.createObjectURL(file);
-			    img.src = url;
-			 }
-
-			function loadURL(inputId, img){ 
-				img.src = document.getElementById(inputId).value;
-			}
-
-			function handleFileDrop(evt,img) {
-			    evt.stopPropagation();
-			    evt.preventDefault();
-
-			    var files = evt.dataTransfer.files; // FileList object.
-
-			    handleFileSelect(files[0],img);
-			  }
-
-			  function handleDragOver(evt) {
-			    evt.stopPropagation();
-			    evt.preventDefault();
-			    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-			  }
-
-			 document.getElementById('imgfile1').addEventListener('change', function(e){var files = e.target.files; handleFileSelect(files[0],img1)}, false);
-			 document.getElementById('btn_imgurl1').addEventListener('click', function(e){loadURL('imgurl1',img1)}, false);
-			 document.getElementById('imgfile2').addEventListener('change', function(e){var files = e.target.files; handleFileSelect(files[0],img2)}, false);
-			 document.getElementById('btn_imgurl2').addEventListener('click', function(e){loadURL('imgurl2',img2)}, false);
-
-			 var dropZone = document.getElementById('drop_zone1');
-			 dropZone.addEventListener('dragover', handleDragOver, false);
-			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img1)}, false);
-
-			 dropZone = document.getElementById('drop_zone2');
-			 dropZone.addEventListener('dragover', handleDragOver, false);
-			 dropZone.addEventListener('drop', function(e){handleFileDrop(e,img2)}, false);
-
-			 function countCoef(points1,points2){
-
-			 	var coef = new Object;
-
-			 	A = [
-                     [points2[0].x, points2[0].y, 1],
-                     [points2[1].x, points2[1].y, 1],
-                     [points2[2].x, points2[2].y, 1]
-                     ];
-
-                Ai = inverseMatrix(A);
-
-                b = [
-                     [points1[0].x],
-                     [points1[1].x],
-                     [points1[2].x]
-                    ];
-
-                coef.tvx = matrixMultiply(Ai,b);
-
-                b = [
-                     [points1[0].y],
-                     [points1[1].y],
-                     [points1[2].y] 
-                    ];
-
-                coef.tvy = matrixMultiply(Ai,b);
-
-                return coef;
-
-			 }
-
-			  function tryDrawResult(){
-
-               		 var canvas = document.getElementById("result_canvas");
-                     canvas.width=img1.width*1.2; // some reserve size
-                     canvas.height=img1.height*1.2;
-
-                     var ctx = canvas.getContext('2d');
-                     ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-
-                     if ( typeof img1.points === "undefined" || typeof img1.points === "undefined" ){
-                     	return;
-                     }
-
-                    if (img1.points.length>=3 && img2.points.length>=3) {
-
-                    	 dx = img1.width*0.1;
-                    	 dy = img1.height*0.1;
-
-                    	 ctx.save();
-
-                    	 ctx.translate(dx,dy);
-
-                         ctx.drawImage(img1, 0, 0);
-
-
-                         minArrayLength = Math.min(img2.points.length,img1.points.length);
-                         combinationsNumber =0;
-                         coef = new Object;
-                         coef.tvx = Array(0.0,0.0,0.0);
-                         coef.tvy = Array(0.0,0.0,0.0);
-
-                         // coun coef using all combinations of 3 points
-                         for (var i = 0; i < minArrayLength-2; i++) {
-                         	for (var j = i+1; j < minArrayLength-1; j++) {
-                         		arr1= new Array(img1.points[i],img1.points[j],img1.points[j+1]);
-	                         	arr2= new Array(img2.points[i],img2.points[j],img2.points[j+1]);
-	                         	coef1 = countCoef(arr1,arr2);
-	                         	arr1=new Array;
-	                         	arr2=new Array;
-	                         	for (var k = 0; k < 3; k++){
-	                         		coef.tvx[k]+=(+coef1.tvx[k]);
-	                         		coef.tvy[k]+=(+coef1.tvy[k]);
-	                         	}
-	                         	combinationsNumber++
-                         	}
-                         };
-
-                        ctx.transform(
-                        	          coef.tvx[0]/combinationsNumber, 
-                        			  coef.tvy[0]/combinationsNumber, 
-                        			  coef.tvx[1]/combinationsNumber,
-                        			  coef.tvy[1]/combinationsNumber,
-                        			  coef.tvx[2]/combinationsNumber,
-                        			  coef.tvy[2]/combinationsNumber
-                        			  );
-
-
-                        style = document.getElementsByName("resultStyle");
-                        resultParam=document.getElementById("resultParam").value;
-
-                        if (style[0].checked){
-                        	//draw img2 with empty parts (like mosaic)
-	                         rowCount = resultParam*10+5;
-
-	                         dx = img2.width/rowCount;
-
-	                         isOdd=false;
-	                         for (var x = 0; x <= img2.width; x+=dx) {
-	                         	for (var y = isOdd?0:dx; y <= img2.height; y+=dx*2) {
-	                         		ctx.drawImage(img2, x, y, dx, dx, x, y, dx, dx);
-	                         	}
-	                         	isOdd=!isOdd;
-	                         };
-                        }
-                        else {
-                        	ctx.globalAlpha = resultParam;
-                        	ctx.drawImage(img2, 0, 0)
-                        }
-                        ctx.restore();
-                    };
-               }
-
-			 function getMousePos(canvas, evt) {
-                  var rect = canvas.getBoundingClientRect();
-                  return {
-                    x: evt.clientX - rect.left,
-                    y: evt.clientY - rect.top
-                  };
-                }
-
-            var canvas1 = document.getElementById('canvas_img1');
-
-            canvas1.addEventListener('mouseup', function(evt) {
-              var mousePos = getMousePos(canvas1, evt);
-              img1.points.push(mousePos);
-              drawImage("canvas_img1",img1);
-              tryDrawResult();
-            }, false);
-
-            var canvas2 = document.getElementById('canvas_img2');
-
-            canvas2.addEventListener('mouseup', function(evt) {
-              var mousePos = getMousePos(canvas2, evt);
-              img2.points.push(mousePos);
-              drawImage("canvas_img2",img2);
-              tryDrawResult();
-            }, false);
-
-
-            function downloadJPEG(){
-
-            	var win = window.open(),
-	            img = getResults();
-
-				win.document.body.innerHTML= "<img src='" + img + "'></img>" // With correct delimiters
-				win.document.close()
-
-            }
-
-		 </script>
-     </body>
 </html>
