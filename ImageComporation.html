@@ -3,6 +3,8 @@
      <head>
           <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           <title>Image compare</title>
+          <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	      <script src="js/selection.js"></script>
           <script src="ualgebra.js"> </script>
      </head> 
      <body>
@@ -158,10 +160,11 @@
                     	 dx = img1.width*0.1;
                     	 dy = img1.height*0.1;
 
+                    	 ctx.save();
+
                     	 ctx.translate(dx,dy);
 
                          ctx.drawImage(img1, 0, 0);
-                         ctx.save();
 
 
                          minArrayLength = Math.min(img2.points.length,img1.points.length);
@@ -169,8 +172,6 @@
                          coef = new Object;
                          coef.tvx = Array(0.0,0.0,0.0);
                          coef.tvy = Array(0.0,0.0,0.0);
-
-                         console.log(coef.tvx);
 
                          // coun coef using all combinations of 3 points
                          for (var i = 0; i < minArrayLength-2; i++) {
@@ -252,9 +253,8 @@
 
             function downloadJPEG(){
 
-            	var canvas = document.getElementById("result_canvas");
             	var win = window.open(),
-	            img = canvas.toDataURL("image/jpeg")
+	            img = getResults();
 
 				win.document.body.innerHTML= "<img src='" + img + "'></img>" // With correct delimiters
 				win.document.close()
