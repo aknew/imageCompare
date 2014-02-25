@@ -6,28 +6,38 @@
     <title>Image compare</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="js/mainScript.js"></script>
-    <script src="js/ualgebra.js">
-    </script>
+    <script src="js/ualgebra.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div>
-        <form>
-            <input id="imgfile1" type="file">or insert URL
-            <input id="imgurl1" type="text">
-            <input id="btn_imgurl1" type="button" value='Загрузить'>
-        </form>
-        <div id="drop_zone1">Drop a file here</div>
-        <canvas id="canvas_img1">Обновите браузер</canvas>
+        <div class="control-panel">
+            <form>
+                <input id="imgfile1" type="file"><br>
+                <!-- or insert URL <input id="imgurl1" type="text">
+                <input id="btn_imgurl1" type="button" value='Загрузить'> -->
+            </form>
+            or
+            <div id="drop_zone1" class="drop-area">Drop a file here</div>
+        </div>
+        <div>
+            <canvas id="canvas_img1">Обновите браузер</canvas>
+        </div>
     </div>
     <div>
-        <form>
-            <input id="imgfile2" type="file">or insert URL
-            <input id="imgurl2" type="text">
-            <input id="btn_imgurl2" type="button" value='Загрузить'>
-        </form>
-        <div id="drop_zone2">Drop a file here</div>
-        <canvas id="canvas_img2">Обновите браузер</canvas>
+        <div class="control-panel">
+            <form>
+                <input id="imgfile2" type="file"><br>
+                <!-- or insert URL <input id="imgurl2" type="text">
+                <input id="btn_imgurl2" type="button" value='Загрузить'> -->
+            </form>
+            or
+            <div id="drop_zone2" class="drop-area">Drop a file here</div>
+        </div>
+        <div>
+            <canvas id="canvas_img2">Обновите браузер</canvas>
+        </div>
     </div>
     <div>
         <form>

@@ -250,16 +250,16 @@ $(function () {
         var files = e.target.files;
         handleFileSelect(files[0], img1)
     }, false);
-    document.getElementById('btn_imgurl1').addEventListener('click', function (e) {
-        loadURL('imgurl1', img1)
-    }, false);
+    // document.getElementById('btn_imgurl1').addEventListener('click', function (e) {
+    //     loadURL('imgurl1', img1)
+    // }, false);
     document.getElementById('imgfile2').addEventListener('change', function (e) {
         var files = e.target.files;
         handleFileSelect(files[0], img2)
     }, false);
-    document.getElementById('btn_imgurl2').addEventListener('click', function (e) {
-        loadURL('imgurl2', img2)
-    }, false);
+    // document.getElementById('btn_imgurl2').addEventListener('click', function (e) {
+    //     loadURL('imgurl2', img2)
+    // }, false);
 
     var dropZone = document.getElementById('drop_zone1');
     dropZone.addEventListener('dragover', handleDragOver, false);

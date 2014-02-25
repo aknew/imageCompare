@@ -1,0 +1,14 @@
+.drop-area{
+    float:left;
+    width:200px;
+    height:100px;
+    border-style:dashed;
+    border-width:1px; 
+}
+.control-panel{
+    float:left;
+    width:210px;
+    border-style:solid;
+    border-width:1px; 
+}
+
