@@ -14,6 +14,7 @@
     <div>
         <div class="control-panel">
             <form>
+                <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img1)"><br>
                 <input id="imgfile1" type="file"><br>
                 <!-- or insert URL <input id="imgurl1" type="text">
                 <input id="btn_imgurl1" type="button" value='Загрузить'> -->
@@ -28,6 +29,7 @@
     <div>
         <div class="control-panel">
             <form>
+                <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img2)"><br>
                 <input id="imgfile2" type="file"><br>
                 <!-- or insert URL <input id="imgurl2" type="text">
                 <input id="btn_imgurl2" type="button" value='Загрузить'> -->
@@ -49,8 +51,6 @@
             <br>
             <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()">
             <br>
-            <!--XXX: there is code like in img1.onload, may be I chould fix it -->
-            <input id="dropMarkers" type="button" value="Drop markers" onclick="img1.points = new Array(); drawImage('canvas_img1',img1); img2.points = new Array(); drawImage('canvas_img2',img2);  tryDrawResult();">
             <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
         </form>
         <canvas id="result_canvas">Обновите браузер</canvas>

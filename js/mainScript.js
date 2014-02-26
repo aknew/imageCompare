@@ -5,8 +5,8 @@ var image;
 var iMouseX, iMouseY = 1;
 var theSelection;
 
-function drawImage(canvasName, img) {
-    var canvas = document.getElementById(canvasName);
+function drawImage(img) {
+    var canvas = img.canvas;
     canvas.width = img.width;
     canvas.height = img.height;
     var ctx = canvas.getContext('2d');
@@ -32,17 +32,7 @@ function dropResults(img) {
 
 }
 
-var img1 = new Image;
-img1.onload = function (e) {
-    dropResults(img1);
-    drawImage('canvas_img1', img1);
-};
-
-var img2 = new Image;
-img2.onload = function (e) {
-    dropResults(img2);
-    drawImage('canvas_img2', img2);
-};
+var img1, img2;
 
 function handleFileSelect(file, img) {
 
@@ -278,7 +268,7 @@ $(function () {
     canvas1.addEventListener('mouseup', function (evt) {
         var mousePos = getMousePos(canvas1, evt);
         img1.points.push(mousePos);
-        drawImage("canvas_img1", img1);
+        drawImage(img1);
         tryDrawResult();
     }, false);
 
@@ -287,9 +277,23 @@ $(function () {
     canvas2.addEventListener('mouseup', function (evt) {
         var mousePos = getMousePos(canvas2, evt);
         img2.points.push(mousePos);
-        drawImage("canvas_img2", img2);
+        drawImage(img2);
         tryDrawResult();
     }, false);
+
+    img1 = new Image;
+    img1.onload = function (e) {
+        dropResults(img1);
+        drawImage(img1);
+    };
+    img1.canvas = canvas1;
+
+    img2 = new Image;
+    img2.onload = function (e) {
+        dropResults(img2);
+        drawImage(img2);
+    };
+    img2.canvas = canvas2;
 
     // creating canvas and context objects
     canvas = document.getElementById('result_canvas');
@@ -439,4 +443,10 @@ function getResults() {
     temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
     var vData = temp_canvas.toDataURL("image/jpeg");
     return vData;
+}
+
+function dropLastPointForImage(img){
+    img.points.pop();
+    drawImage(img); 
+    tryDrawResult();
 }
