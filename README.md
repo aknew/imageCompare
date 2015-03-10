@@ -7,3 +7,10 @@ Main idea - if we have two images and want compare it, we need align it first vi
 
 
 [ualgebra.js](https://github.com/plainas/ualgebra.js) is used in this project for solve this equation system
+
+
+Project has two branches:
+
+**clearVersion** - is fully functionally project
+
+**master** - is uses on github.io, it contains some metrics also which isn't a part of current project actually. Maybe I will add some adverts to this branch in the future.
