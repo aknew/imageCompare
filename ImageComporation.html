@@ -1,60 +1,73 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Image compare</title>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="js/mainScript.js"></script>
-    <script src="js/ualgebra.js"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Image compare</title>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/mainScript.js"></script>
+        <script src="js/ualgebra.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-<body>
-    <div>
-        <div class="control-panel">
-            <form>
-                <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img1)"><br>
-                <input id="imgfile1" type="file"><br>
-                <!-- or insert URL <input id="imgurl1" type="text">
-                <input id="btn_imgurl1" type="button" value='Загрузить'> -->
-            </form>
-            or
-            <div id="drop_zone1" class="drop-area">Drop a file here</div>
-        </div>
-        <div>
-            <canvas id="canvas_img1">Обновите браузер</canvas>
-        </div>
-    </div>
-    <div>
-        <div class="control-panel">
-            <form>
-                <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img2)"><br>
-                <input id="imgfile2" type="file"><br>
-                <!-- or insert URL <input id="imgurl2" type="text">
-                <input id="btn_imgurl2" type="button" value='Загрузить'> -->
-            </form>
-            or
-            <div id="drop_zone2" class="drop-area">Drop a file here</div>
-        </div>
-        <div>
-            <canvas id="canvas_img2">Обновите браузер</canvas>
-        </div>
-    </div>
-    <div>
-        <form>
-            Result style:
-            <br>
-            <input type="radio" name="resultStyle" value="Mosaic" checked onclick="tryDrawResult()">Mosaic
-            <input type="radio" name="resultStyle" value="Transparency" onclick="tryDrawResult()">Transparency
-            <br>Style parameter (alpha in range 0-1 or number of pieces in range 5-15):
-            <br>
-            <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()">
-            <br>
-            <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
-        </form>
-        <canvas id="result_canvas">Обновите браузер</canvas>
-    </div>
-</body>
+    <body>
+        <section class="wrapper">
+            <ul class="tabs">
+                <li><a href="#tab1">Картинка 1</a></li>
+                <li><a href="#tab2">Картинка 2</a></li>
+                <li><a href="#tab3">Результат </a></li>
+            </ul>
+            <div class="clr"></div>
+            <section class="block">
+                <article id="tab1">
+                    <div class="control-panel">
+                        <form>
+                            <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img1)"><br>
+                            <input id="imgfile1" type="file"><br>
+                            <!-- or insert URL <input id="imgurl1" type="text">
+                            <input id="btn_imgurl1" type="button" value='Загрузить'> -->
+                        </form>
+                        or
+                        <div id="drop_zone1" class="drop-area">Drop a file here</div>
+                    </div>
+                    <div>
+                        <canvas id="canvas_img1">Обновите браузер</canvas>
+                    </div>
+                </article>
+                <article id="tab2">
+                    <div>
+                        <div class="control-panel">
+                            <form>
+                                <input id="dropMarkers1" type="button" value="Drop last marker" onclick="dropLastPointForImage(img2)"><br>
+                                <input id="imgfile2" type="file"><br>
+                                <!-- or insert URL <input id="imgurl2" type="text">
+                                <input id="btn_imgurl2" type="button" value='Загрузить'> -->
+                            </form>
+                            or
+                            <div id="drop_zone2" class="drop-area">Drop a file here</div>
+                        </div>
+                        <div>
+                            <canvas id="canvas_img2">Обновите браузер</canvas>
+                        </div>
+                    </div>
+                </article>
+                <article id="tab3">
+                    <div>
+                        <form>
+                            Result style:
+                            <br>
+                            <input type="radio" name="resultStyle" value="Mosaic" checked onclick="tryDrawResult()">Mosaic
+                            <input type="radio" name="resultStyle" value="Transparency" onclick="tryDrawResult()">Transparency
+                            <br>Style parameter (alpha in range 0-1 or number of pieces in range 5-15):
+                            <br>
+                            <input id="resultParam" type="range" max=1 min=0 default=0.5 step=0.1 onclick="tryDrawResult()">
+                            <br>
+                            <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
+                        </form>
+                        <canvas id="result_canvas">Обновите браузер</canvas>
+                    </div></article>
+            </section>
+        </section>
+    </body>
 
 </html>

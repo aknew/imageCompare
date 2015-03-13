@@ -136,16 +136,17 @@ function tryDrawResult() {
                 }
                 combinationsNumber++
             }
-        };
+        }
+        ;
 
         ctx.transform(
-            coef.tvx[0] / combinationsNumber,
-            coef.tvy[0] / combinationsNumber,
-            coef.tvx[1] / combinationsNumber,
-            coef.tvy[1] / combinationsNumber,
-            coef.tvx[2] / combinationsNumber,
-            coef.tvy[2] / combinationsNumber
-        );
+                coef.tvx[0] / combinationsNumber,
+                coef.tvy[0] / combinationsNumber,
+                coef.tvx[1] / combinationsNumber,
+                coef.tvy[1] / combinationsNumber,
+                coef.tvx[2] / combinationsNumber,
+                coef.tvy[2] / combinationsNumber
+                );
 
 
         style = document.getElementsByName("resultStyle");
@@ -163,13 +164,15 @@ function tryDrawResult() {
                     ctx.drawImage(img2, x, y, dx, dx, x, y, dx, dx);
                 }
                 isOdd = !isOdd;
-            };
+            }
+            ;
         } else {
             ctx.globalAlpha = resultParam;
             ctx.drawImage(img2, 0, 0)
         }
         ctx.restore();
-    };
+    }
+    ;
 }
 
 function getMousePos(canvas, evt) {
@@ -183,7 +186,7 @@ function getMousePos(canvas, evt) {
 function downloadJPEG() {
 
     var win = window.open(),
-        img = getResults();
+            img = getResults();
 
     win.document.body.innerHTML = "<img src='" + img + "'></img>" // With correct delimiters
     win.document.close()
@@ -235,6 +238,18 @@ function drawScene() { // main drawScene function
 }
 
 $(function () {
+
+    $('ul.tabs li:first').addClass('active');
+    $('.block article').hide();
+    $('.block article:first').show();
+    $('ul.tabs li').on('click', function () {
+        $('ul.tabs li').removeClass('active');
+        $(this).addClass('active')
+        $('.block article').hide();
+        var activeTab = $(this).find('a').attr('href');
+        $(activeTab).show();
+        return false;
+    });
 
     document.getElementById('imgfile1').addEventListener('change', function (e) {
         var files = e.target.files;
@@ -320,25 +335,25 @@ $(function () {
 
         // hovering over resize cubes
         if (iMouseX > theSelection.x - theSelection.csizeh && iMouseX < theSelection.x + theSelection.csizeh &&
-            iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
+                iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
 
             theSelection.bHow[0] = true;
             theSelection.iCSize[0] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x + theSelection.w - theSelection.csizeh && iMouseX < theSelection.x + theSelection.w + theSelection.csizeh &&
-            iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
+                iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
 
             theSelection.bHow[1] = true;
             theSelection.iCSize[1] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x + theSelection.w - theSelection.csizeh && iMouseX < theSelection.x + theSelection.w + theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
 
             theSelection.bHow[2] = true;
             theSelection.iCSize[2] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x - theSelection.csizeh && iMouseX < theSelection.x + theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
 
             theSelection.bHow[3] = true;
             theSelection.iCSize[3] = theSelection.csizeh;
@@ -409,7 +424,7 @@ $(function () {
 
 
         if (iMouseX > theSelection.x + theSelection.csizeh && iMouseX < theSelection.x + theSelection.w - theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.csizeh && iMouseY < theSelection.y + theSelection.h - theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.csizeh && iMouseY < theSelection.y + theSelection.h - theSelection.csizeh) {
 
             theSelection.bDragAll = true;
         }
@@ -445,8 +460,8 @@ function getResults() {
     return vData;
 }
 
-function dropLastPointForImage(img){
+function dropLastPointForImage(img) {
     img.points.pop();
-    drawImage(img); 
+    drawImage(img);
     tryDrawResult();
 }
