@@ -96,6 +96,12 @@ function tryDrawResult() {
 
     canvas.width = img1.width * 1.2; // some reserve size
     canvas.height = img1.height * 1.2;
+    
+    if (canvas.height === 0){
+        // XXX: hotfix - otherwise have an error in tab drawing
+        canvas.height = 10;
+        canvas.width = 10;
+    }
 
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
