@@ -140,7 +140,7 @@ function tryDrawResult() {
                     coef.tvx[k] += (+coef1.tvx[k]);
                     coef.tvy[k] += (+coef1.tvy[k]);
                 }
-                combinationsNumber++
+                combinationsNumber++;
             }
         }
         ;
@@ -174,7 +174,7 @@ function tryDrawResult() {
             ;
         } else {
             ctx.globalAlpha = resultParam;
-            ctx.drawImage(img2, 0, 0)
+            ctx.drawImage(img2, 0, 0);
         }
         ctx.restore();
     }
@@ -194,8 +194,8 @@ function downloadJPEG() {
     var win = window.open(),
             img = getResults();
 
-    win.document.body.innerHTML = "<img src='" + img + "'></img>" // With correct delimiters
-    win.document.close()
+    win.document.body.innerHTML = "<img src='" + img + "'></img>"; // With correct delimiters
+    win.document.close();
 
 }
 
@@ -231,7 +231,7 @@ Selection.prototype.draw = function () {
     ctx.fillRect(this.x + this.w - this.iCSize[1], this.y - this.iCSize[1], this.iCSize[1] * 2, this.iCSize[1] * 2);
     ctx.fillRect(this.x + this.w - this.iCSize[2], this.y + this.h - this.iCSize[2], this.iCSize[2] * 2, this.iCSize[2] * 2);
     ctx.fillRect(this.x - this.iCSize[3], this.y + this.h - this.iCSize[3], this.iCSize[3] * 2, this.iCSize[3] * 2);
-}
+};
 
 function drawScene() { // main drawScene function
 
@@ -250,7 +250,7 @@ $(function () {
     $('.block article:first').show();
     $('ul.tabs li').on('click', function () {
         $('ul.tabs li').removeClass('active');
-        $(this).addClass('active')
+        $(this).addClass('active');
         $('.block article').hide();
         var activeTab = $(this).find('a').attr('href');
         $(activeTab).show();
@@ -259,14 +259,14 @@ $(function () {
 
     document.getElementById('imgfile1').addEventListener('change', function (e) {
         var files = e.target.files;
-        handleFileSelect(files[0], img1)
+        handleFileSelect(files[0], img1);
     }, false);
     // document.getElementById('btn_imgurl1').addEventListener('click', function (e) {
     //     loadURL('imgurl1', img1)
     // }, false);
     document.getElementById('imgfile2').addEventListener('change', function (e) {
         var files = e.target.files;
-        handleFileSelect(files[0], img2)
+        handleFileSelect(files[0], img2);
     }, false);
     // document.getElementById('btn_imgurl2').addEventListener('click', function (e) {
     //     loadURL('imgurl2', img2)
@@ -275,13 +275,13 @@ $(function () {
     var dropZone = document.getElementById('drop_zone1');
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img1)
+        handleFileDrop(e, img1);
     }, false);
 
     dropZone = document.getElementById('drop_zone2');
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img2)
+        handleFileDrop(e, img2);
     }, false);
 
     var canvas1 = document.getElementById('canvas_img1');
