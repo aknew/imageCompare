@@ -256,6 +256,8 @@ $(function () {
         $(activeTab).show();
         return false;
     });
+    
+    loadBundles($.i18n.browserLang());
 
     document.getElementById('imgfile1').addEventListener('change', function (e) {
         var files = e.target.files;
@@ -471,3 +473,29 @@ function dropLastPointForImage(img) {
     drawImage(img);
     tryDrawResult();
 }
+
+function loadBundles(lang) {
+                $.i18n.properties({
+                    name: 'locale',
+                    path: 'res/',
+                    mode: 'both',
+                    language: lang,
+                    callback: function() {
+                        console.log(lang);
+                        $("#tab1_header").text(tab1_header);
+                        $("#tab2_header").text(tab2_header);
+                        $("#tab3_header").text(tab3_header);
+                        $("#way_to_load1").text(way_to_load);
+                        $("#way_to_load2").text(way_to_load);
+                        $("#drop_zone1").text(drop_zone);
+                        $("#drop_zone2").text(drop_zone);
+                        $("#dropbutton1").text(dropbutton);
+                        $("#dropbutton2").text(dropbutton);
+                        $("#resstyle").text(resstyle);
+                        $("#Mosaic").text(Mosaic);
+                        $("#Transparency").text(Transparency);
+                        $("#styleparam").text(styleparam);
+                        $("#downJPEG").text(downJPEG);   
+                    }
+                });
+            }
