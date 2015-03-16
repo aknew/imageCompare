@@ -489,13 +489,13 @@ function loadBundles(lang) {
                         $("#way_to_load2").text(way_to_load);
                         $("#drop_zone1").text(drop_zone);
                         $("#drop_zone2").text(drop_zone);
-                        $("#dropbutton1").text(dropbutton);
-                        $("#dropbutton2").text(dropbutton);
+                        $("#dropbutton1").val(dropbutton);
+                        $("#dropbutton2").val(dropbutton);
                         $("#resstyle").text(resstyle);
                         $("#Mosaic").text(Mosaic);
                         $("#Transparency").text(Transparency);
                         $("#styleparam").text(styleparam);
-                        $("#downJPEG").text(downJPEG);   
+                        $("#downJPEG").val(downJPEG);
                     }
                 });
             }
