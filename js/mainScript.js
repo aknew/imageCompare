@@ -256,8 +256,9 @@ $(function () {
         $(activeTab).show();
         return false;
     });
-    
-    loadBundles($.i18n.browserLang());
+    var lang = navigator.language /* Mozilla */ || navigator.userLanguage /* IE */;
+    lang = lang.substring(0, 2);
+    loadBundles(lang);
 
     document.getElementById('imgfile1').addEventListener('change', function (e) {
         var files = e.target.files;
@@ -475,27 +476,50 @@ function dropLastPointForImage(img) {
 }
 
 function loadBundles(lang) {
-                $.i18n.properties({
-                    name: 'locale',
-                    path: 'res/',
-                    mode: 'both',
-                    language: lang,
-                    callback: function() {
-                        console.log(lang);
-                        $("#tab1_header").text(tab1_header);
-                        $("#tab2_header").text(tab2_header);
-                        $("#tab3_header").text(tab3_header);
-                        $("#way_to_load1").text(way_to_load);
-                        $("#way_to_load2").text(way_to_load);
-                        $("#drop_zone1").text(drop_zone);
-                        $("#drop_zone2").text(drop_zone);
-                        $("#dropbutton1").val(dropbutton);
-                        $("#dropbutton2").val(dropbutton);
-                        $("#resstyle").text(resstyle);
-                        $("#Mosaic").text(Mosaic);
-                        $("#Transparency").text(Transparency);
-                        $("#styleparam").text(styleparam);
-                        $("#downJPEG").val(downJPEG);
-                    }
-                });
-            }
+
+    var translation = translations[lang];
+    
+    if (translation === undefined){
+        translation = translations["en"];
+    }
+
+    $("#tab1_header").text(translation["tab1_header"]);
+    $("#tab2_header").text(translation["tab2_header"]);
+    $("#tab3_header").text(translation["tab3_header"]);
+    $("#way_to_load1").text(translation["way_to_load"]);
+    $("#way_to_load2").text(translation["way_to_load"]);
+    $("#drop_zone1").text(translation["drop_zone"]);
+    $("#drop_zone2").text(translation["drop_zone"]);
+    $("#dropbutton1").val(translation["dropbutton"]);
+    $("#dropbutton2").val(translation["dropbutton"]);
+    $("#resstyle").text(translation["resstyle"]);
+    $("#Mosaic").text(translation["Mosaic"]);
+    $("#Transparency").text(translation["Transparency"]);
+    $("#styleparam").text(translation["styleparam"]);
+    $("#downJPEG").val(translation["downJPEG"]);
+}
+            
+var translations = {
+    "en": {"tab1_header": "Image 1",
+        "tab2_header": "Image 2",
+        "tab3_header": "Result",
+        "way_to_load": "Ways to load the image:",
+        "drop_zone": "Drop a file here",
+        "dropbutton": "Drop last marker",
+        "resstyle": "Result style:",
+        "Mosaic": "Mosaic",
+        "Transparency": "Transparency",
+        "styleparam": "Style parameter (alpha value or number of pieces in mosaic):",
+        "downJPEG": "Save result as jpeg"},
+    "ru": {"tab1_header": "Картинка 1",
+        "tab2_header": "Картинка 2",
+        "tab3_header": "Результат",
+        "way_to_load": "Способы загрузки картинки:",
+        "drop_zone": "Перетащите картинку сюда",
+        "dropbutton": "Сбросить последний маркер",
+        "resstyle": "Стиль результата:",
+        "Mosaic": "Мозайка",
+        "Transparency": "Прозрачность",
+        "styleparam": "Настройка стиля (степень прозрачности или количество элементов мозайки):",
+        "downJPEG": "Сохранить как jpeg"}
+};

@@ -16,5 +16,3 @@ Project has two branches:
 [ualgebra.js](https://github.com/plainas/ualgebra.js) is used for solving equation system
 
 [Tabs with HTML5, CSS3 and jQuery](http://codepen.io/CesarGabriel/pen/tKaxq)
-
-[jquery-i18n-properties](https://github.com/jquery-i18n-properties/jquery-i18n-properties)
