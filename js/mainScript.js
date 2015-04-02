@@ -201,6 +201,9 @@ function downloadJPEG() {
 
 // define Selection constructor
 function Selection(x, y, w, h) {
+    
+    this.hidden = false;
+    
     this.x = x; // initial positions
     this.y = y;
     this.w = w; // and size
@@ -220,6 +223,10 @@ function Selection(x, y, w, h) {
 
 // define Selection draw method
 Selection.prototype.draw = function () {
+    
+    if (this.hidden){
+        return;
+    }
 
     ctx.strokeStyle = '#f00';
     ctx.lineWidth = 2;
@@ -464,7 +471,11 @@ function getResults() {
     temp_ctx = temp_canvas.getContext('2d');
     temp_canvas.width = theSelection.w;
     temp_canvas.height = theSelection.h;
+    theSelection.hidden = true;
+    drawScene();
     temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+    theSelection.hidden = false;
+    drawScene();
     var vData = temp_canvas.toDataURL("image/jpeg");
     return vData;
 }
