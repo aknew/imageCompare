@@ -16,3 +16,5 @@ Project has two branches:
 [ualgebra.js](https://github.com/plainas/ualgebra.js) is used for solving equation system
 
 [Tabs with HTML5, CSS3 and jQuery](http://codepen.io/CesarGabriel/pen/tKaxq)
+
+[Save to GIF](https://github.com/antimatter15/jsgif)

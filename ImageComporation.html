@@ -7,6 +7,10 @@
         <script src="js/jquery-latest.min.js"></script>
         <script src="js/mainScript.js"></script>
         <script src="js/ualgebra.js"></script>
+        <script type="text/javascript" src="js/LZWEncoder.js"></script> 
+        <script type="text/javascript" src="js/NeuQuant.js"></script> 
+        <script type="text/javascript" src="js/GIFEncoder.js"></script>
+        <script type="text/javascript" src="js/b64.js"></script>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -69,6 +73,8 @@
                             <input id="resultParam" type="range" max=1 min=0 value=0.5 step=0.1 onclick="tryDrawResult()">
                             <br>
                             <input id="downJPEG" type="button" value='Save result as jpeg' onclick="downloadJPEG()">
+                            <input id="downGIF" type="button" value='Save result as gif' onclick="downloadGif()">
+                            <br>
                         </form>
                     </div>
                     <br>

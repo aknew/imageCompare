@@ -4,6 +4,7 @@ var canvas, ctx;
 var image;
 var iMouseX, iMouseY = 1;
 var theSelection;
+var resultParam = -1;
 
 function drawImage(img) {
     var canvas = img.canvas;
@@ -96,8 +97,8 @@ function tryDrawResult() {
 
     canvas.width = img1.width * 1.2; // some reserve size
     canvas.height = img1.height * 1.2;
-    
-    if (canvas.height === 0){
+
+    if (canvas.height === 0) {
         // XXX: hotfix - otherwise have an error in tab drawing
         canvas.height = 10;
         canvas.width = 10;
@@ -156,11 +157,11 @@ function tryDrawResult() {
 
 
         style = document.getElementsByName("resultStyle");
-        resultParam = document.getElementById("resultParam").value;
+        var useParam = resultParam<0 ? document.getElementById("resultParam").value : resultParam;
 
         if (style[0].checked) {
             //draw img2 with empty parts (like mosaic)
-            rowCount = resultParam * 10 + 5;
+            rowCount = useParam * 10 + 5;
 
             dx = img2.width / rowCount;
 
@@ -173,7 +174,7 @@ function tryDrawResult() {
             }
             ;
         } else {
-            ctx.globalAlpha = resultParam;
+            ctx.globalAlpha = useParam;
             ctx.drawImage(img2, 0, 0);
         }
         ctx.restore();
@@ -201,9 +202,9 @@ function downloadJPEG() {
 
 // define Selection constructor
 function Selection(x, y, w, h) {
-    
+
     this.hidden = false;
-    
+
     this.x = x; // initial positions
     this.y = y;
     this.w = w; // and size
@@ -223,8 +224,8 @@ function Selection(x, y, w, h) {
 
 // define Selection draw method
 Selection.prototype.draw = function () {
-    
-    if (this.hidden){
+
+    if (this.hidden) {
         return;
     }
 
@@ -480,6 +481,47 @@ function getResults() {
     return vData;
 }
 
+function downloadGif() {
+    var temp_ctx, temp_canvas;
+    var encoder = new GIFEncoder();
+    encoder.setRepeat(0); //0  -> loop forever
+    encoder.setDelay(200); //go to next frame every n milliseconds
+    temp_canvas = document.createElement('canvas');
+    temp_ctx = temp_canvas.getContext('2d');
+    temp_canvas.width = theSelection.w;
+    temp_canvas.height = theSelection.h;
+    theSelection.hidden = true;
+
+    encoder.start();
+    encoder.setSize(theSelection.w, theSelection.h);
+    
+    for (resultParam = 0; resultParam <= 1; resultParam += 0.1) {
+        drawScene();
+        temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+        encoder.addFrame(temp_ctx);
+    }
+    
+    for (resultParam = 1; resultParam > 0; resultParam -= 0.1) {
+        drawScene();
+        temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+        encoder.addFrame(temp_ctx);
+    }
+
+    encoder.finish();
+
+
+    theSelection.hidden = false;
+    resultParam = -1;
+    drawScene();
+    var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
+    var data_url = 'data:image/gif;base64,'+encode64(binary_gif);
+    var win = window.open();
+
+    win.document.body.innerHTML = "<img src='" + data_url + "'></img>"; // With correct delimiters
+    win.document.close();
+    
+}
+
 function dropLastPointForImage(img) {
     img.points.pop();
     drawImage(img);
@@ -489,8 +531,8 @@ function dropLastPointForImage(img) {
 function loadBundles(lang) {
 
     var translation = translations[lang];
-    
-    if (translation === undefined){
+
+    if (translation === undefined) {
         translation = translations["en"];
     }
 
@@ -508,8 +550,9 @@ function loadBundles(lang) {
     $("#Transparency").text(translation["Transparency"]);
     $("#styleparam").text(translation["styleparam"]);
     $("#downJPEG").val(translation["downJPEG"]);
+    $("#downGIF").val(translation["downGIF"]);
 }
-            
+
 var translations = {
     "en": {"tab1_header": "Image 1",
         "tab2_header": "Image 2",
@@ -521,7 +564,9 @@ var translations = {
         "Mosaic": "Mosaic",
         "Transparency": "Transparency",
         "styleparam": "Style parameter (alpha value or number of pieces in mosaic):",
-        "downJPEG": "Save result as jpeg"},
+        "downJPEG": "Save result as jpeg",
+        "downGIF" :"Save result as gif"
+    },
     "ru": {"tab1_header": "Картинка 1",
         "tab2_header": "Картинка 2",
         "tab3_header": "Результат",
@@ -532,5 +577,7 @@ var translations = {
         "Mosaic": "Мозайка",
         "Transparency": "Прозрачность",
         "styleparam": "Настройка стиля (степень прозрачности или количество элементов мозайки):",
-        "downJPEG": "Сохранить как jpeg"}
+        "downJPEG": "Сохранить как jpeg",
+        "downGIF" :"Сохранить как gif"
+    }
 };
