@@ -190,16 +190,6 @@ function getMousePos(canvas, evt) {
     };
 }
 
-function downloadJPEG() {
-
-    var win = window.open(),
-            img = getResults();
-
-    win.document.body.innerHTML = "<img src='" + img + "'></img>"; // With correct delimiters
-    win.document.close();
-
-}
-
 // define Selection constructor
 function Selection(x, y, w, h) {
 
@@ -466,7 +456,7 @@ $(function () {
     drawScene();
 });
 
-function getResults() {
+function downloadJPEG() {
     var temp_ctx, temp_canvas;
     temp_canvas = document.createElement('canvas');
     temp_ctx = temp_canvas.getContext('2d');
@@ -478,7 +468,11 @@ function getResults() {
     theSelection.hidden = false;
     drawScene();
     var vData = temp_canvas.toDataURL("image/jpeg");
-    return vData;
+    
+    var win = window.open();
+
+    win.document.body.innerHTML = "<img src='" + vData + "'></img>"; // With correct delimiters
+    win.document.close();
 }
 
 function downloadGif() {
