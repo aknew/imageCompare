@@ -4,6 +4,7 @@ var canvas, ctx;
 var image;
 var iMouseX, iMouseY = 1;
 var theSelection;
+var resultParam = -1;
 
 function drawImage(img) {
     var canvas = img.canvas;
@@ -97,6 +98,12 @@ function tryDrawResult() {
     canvas.width = img1.width * 1.2; // some reserve size
     canvas.height = img1.height * 1.2;
 
+    if (canvas.height === 0) {
+        // XXX: hotfix - otherwise have an error in tab drawing
+        canvas.height = 10;
+        canvas.width = 10;
+    }
+
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -134,26 +141,27 @@ function tryDrawResult() {
                     coef.tvx[k] += (+coef1.tvx[k]);
                     coef.tvy[k] += (+coef1.tvy[k]);
                 }
-                combinationsNumber++
+                combinationsNumber++;
             }
-        };
+        }
+        ;
 
         ctx.transform(
-            coef.tvx[0] / combinationsNumber,
-            coef.tvy[0] / combinationsNumber,
-            coef.tvx[1] / combinationsNumber,
-            coef.tvy[1] / combinationsNumber,
-            coef.tvx[2] / combinationsNumber,
-            coef.tvy[2] / combinationsNumber
-        );
+                coef.tvx[0] / combinationsNumber,
+                coef.tvy[0] / combinationsNumber,
+                coef.tvx[1] / combinationsNumber,
+                coef.tvy[1] / combinationsNumber,
+                coef.tvx[2] / combinationsNumber,
+                coef.tvy[2] / combinationsNumber
+                );
 
 
         style = document.getElementsByName("resultStyle");
-        resultParam = document.getElementById("resultParam").value;
+        var useParam = resultParam<0 ? document.getElementById("resultParam").value : resultParam;
 
         if (style[0].checked) {
             //draw img2 with empty parts (like mosaic)
-            rowCount = resultParam * 10 + 5;
+            rowCount = useParam * 10 + 5;
 
             dx = img2.width / rowCount;
 
@@ -163,13 +171,15 @@ function tryDrawResult() {
                     ctx.drawImage(img2, x, y, dx, dx, x, y, dx, dx);
                 }
                 isOdd = !isOdd;
-            };
+            }
+            ;
         } else {
-            ctx.globalAlpha = resultParam;
-            ctx.drawImage(img2, 0, 0)
+            ctx.globalAlpha = useParam;
+            ctx.drawImage(img2, 0, 0);
         }
         ctx.restore();
-    };
+    }
+    ;
 }
 
 function getMousePos(canvas, evt) {
@@ -180,18 +190,11 @@ function getMousePos(canvas, evt) {
     };
 }
 
-function downloadJPEG() {
-
-    var win = window.open(),
-        img = getResults();
-
-    win.document.body.innerHTML = "<img src='" + img + "'></img>" // With correct delimiters
-    win.document.close()
-
-}
-
 // define Selection constructor
 function Selection(x, y, w, h) {
+
+    this.hidden = false;
+
     this.x = x; // initial positions
     this.y = y;
     this.w = w; // and size
@@ -212,6 +215,10 @@ function Selection(x, y, w, h) {
 // define Selection draw method
 Selection.prototype.draw = function () {
 
+    if (this.hidden) {
+        return;
+    }
+
     ctx.strokeStyle = '#f00';
     ctx.lineWidth = 2;
     ctx.strokeRect(this.x, this.y, this.w, this.h);
@@ -222,7 +229,7 @@ Selection.prototype.draw = function () {
     ctx.fillRect(this.x + this.w - this.iCSize[1], this.y - this.iCSize[1], this.iCSize[1] * 2, this.iCSize[1] * 2);
     ctx.fillRect(this.x + this.w - this.iCSize[2], this.y + this.h - this.iCSize[2], this.iCSize[2] * 2, this.iCSize[2] * 2);
     ctx.fillRect(this.x - this.iCSize[3], this.y + this.h - this.iCSize[3], this.iCSize[3] * 2, this.iCSize[3] * 2);
-}
+};
 
 function drawScene() { // main drawScene function
 
@@ -236,16 +243,31 @@ function drawScene() { // main drawScene function
 
 $(function () {
 
+    $('ul.tabs li:first').addClass('active');
+    $('.block article').hide();
+    $('.block article:first').show();
+    $('ul.tabs li').on('click', function () {
+        $('ul.tabs li').removeClass('active');
+        $(this).addClass('active');
+        $('.block article').hide();
+        var activeTab = $(this).find('a').attr('href');
+        $(activeTab).show();
+        return false;
+    });
+    var lang = navigator.language /* Mozilla */ || navigator.userLanguage /* IE */;
+    lang = lang.substring(0, 2);
+    loadBundles(lang);
+
     document.getElementById('imgfile1').addEventListener('change', function (e) {
         var files = e.target.files;
-        handleFileSelect(files[0], img1)
+        handleFileSelect(files[0], img1);
     }, false);
     // document.getElementById('btn_imgurl1').addEventListener('click', function (e) {
     //     loadURL('imgurl1', img1)
     // }, false);
     document.getElementById('imgfile2').addEventListener('change', function (e) {
         var files = e.target.files;
-        handleFileSelect(files[0], img2)
+        handleFileSelect(files[0], img2);
     }, false);
     // document.getElementById('btn_imgurl2').addEventListener('click', function (e) {
     //     loadURL('imgurl2', img2)
@@ -254,13 +276,13 @@ $(function () {
     var dropZone = document.getElementById('drop_zone1');
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img1)
+        handleFileDrop(e, img1);
     }, false);
 
     dropZone = document.getElementById('drop_zone2');
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img2)
+        handleFileDrop(e, img2);
     }, false);
 
     var canvas1 = document.getElementById('canvas_img1');
@@ -320,25 +342,25 @@ $(function () {
 
         // hovering over resize cubes
         if (iMouseX > theSelection.x - theSelection.csizeh && iMouseX < theSelection.x + theSelection.csizeh &&
-            iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
+                iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
 
             theSelection.bHow[0] = true;
             theSelection.iCSize[0] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x + theSelection.w - theSelection.csizeh && iMouseX < theSelection.x + theSelection.w + theSelection.csizeh &&
-            iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
+                iMouseY > theSelection.y - theSelection.csizeh && iMouseY < theSelection.y + theSelection.csizeh) {
 
             theSelection.bHow[1] = true;
             theSelection.iCSize[1] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x + theSelection.w - theSelection.csizeh && iMouseX < theSelection.x + theSelection.w + theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
 
             theSelection.bHow[2] = true;
             theSelection.iCSize[2] = theSelection.csizeh;
         }
         if (iMouseX > theSelection.x - theSelection.csizeh && iMouseX < theSelection.x + theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.h - theSelection.csizeh && iMouseY < theSelection.y + theSelection.h + theSelection.csizeh) {
 
             theSelection.bHow[3] = true;
             theSelection.iCSize[3] = theSelection.csizeh;
@@ -409,7 +431,7 @@ $(function () {
 
 
         if (iMouseX > theSelection.x + theSelection.csizeh && iMouseX < theSelection.x + theSelection.w - theSelection.csizeh &&
-            iMouseY > theSelection.y + theSelection.csizeh && iMouseY < theSelection.y + theSelection.h - theSelection.csizeh) {
+                iMouseY > theSelection.y + theSelection.csizeh && iMouseY < theSelection.y + theSelection.h - theSelection.csizeh) {
 
             theSelection.bDragAll = true;
         }
@@ -434,19 +456,122 @@ $(function () {
     drawScene();
 });
 
-function getResults() {
+function downloadJPEG() {
     var temp_ctx, temp_canvas;
     temp_canvas = document.createElement('canvas');
     temp_ctx = temp_canvas.getContext('2d');
     temp_canvas.width = theSelection.w;
     temp_canvas.height = theSelection.h;
+    theSelection.hidden = true;
+    drawScene();
     temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+    theSelection.hidden = false;
+    drawScene();
     var vData = temp_canvas.toDataURL("image/jpeg");
-    return vData;
+    
+    var win = window.open();
+
+    win.document.body.innerHTML = "<img src='" + vData + "'></img>"; // With correct delimiters
+    win.document.close();
 }
 
-function dropLastPointForImage(img){
+function downloadGif() {
+    var temp_ctx, temp_canvas;
+    var encoder = new GIFEncoder();
+    encoder.setRepeat(0); //0  -> loop forever
+    encoder.setDelay(200); //go to next frame every n milliseconds
+    temp_canvas = document.createElement('canvas');
+    temp_ctx = temp_canvas.getContext('2d');
+    temp_canvas.width = theSelection.w;
+    temp_canvas.height = theSelection.h;
+    theSelection.hidden = true;
+
+    encoder.start();
+    encoder.setSize(theSelection.w, theSelection.h);
+    
+    for (resultParam = 0; resultParam <= 1; resultParam += 0.1) {
+        drawScene();
+        temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+        encoder.addFrame(temp_ctx);
+    }
+    
+    for (resultParam = 1; resultParam > 0; resultParam -= 0.1) {
+        drawScene();
+        temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
+        encoder.addFrame(temp_ctx);
+    }
+
+    encoder.finish();
+
+
+    theSelection.hidden = false;
+    resultParam = -1;
+    drawScene();
+    var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
+    var data_url = 'data:image/gif;base64,'+encode64(binary_gif);
+    var win = window.open();
+
+    win.document.body.innerHTML = "<img src='" + data_url + "'></img>"; // With correct delimiters
+    win.document.close();
+    
+}
+
+function dropLastPointForImage(img) {
     img.points.pop();
-    drawImage(img); 
+    drawImage(img);
     tryDrawResult();
 }
+
+function loadBundles(lang) {
+
+    var translation = translations[lang];
+
+    if (translation === undefined) {
+        translation = translations["en"];
+    }
+
+    $("#tab1_header").text(translation["tab1_header"]);
+    $("#tab2_header").text(translation["tab2_header"]);
+    $("#tab3_header").text(translation["tab3_header"]);
+    $("#way_to_load1").text(translation["way_to_load"]);
+    $("#way_to_load2").text(translation["way_to_load"]);
+    $("#drop_zone1").text(translation["drop_zone"]);
+    $("#drop_zone2").text(translation["drop_zone"]);
+    $("#dropbutton1").val(translation["dropbutton"]);
+    $("#dropbutton2").val(translation["dropbutton"]);
+    $("#resstyle").text(translation["resstyle"]);
+    $("#Mosaic").text(translation["Mosaic"]);
+    $("#Transparency").text(translation["Transparency"]);
+    $("#styleparam").text(translation["styleparam"]);
+    $("#downJPEG").val(translation["downJPEG"]);
+    $("#downGIF").val(translation["downGIF"]);
+}
+
+var translations = {
+    "en": {"tab1_header": "Image 1",
+        "tab2_header": "Image 2",
+        "tab3_header": "Result",
+        "way_to_load": "Ways to load the image:",
+        "drop_zone": "Drop a file here",
+        "dropbutton": "Drop last marker",
+        "resstyle": "Result style:",
+        "Mosaic": "Mosaic",
+        "Transparency": "Transparency",
+        "styleparam": "Style parameter (alpha value or number of pieces in mosaic):",
+        "downJPEG": "Save result as jpeg",
+        "downGIF" :"Save result as gif"
+    },
+    "ru": {"tab1_header": "Картинка 1",
+        "tab2_header": "Картинка 2",
+        "tab3_header": "Результат",
+        "way_to_load": "Способы загрузки картинки:",
+        "drop_zone": "Перетащите картинку сюда",
+        "dropbutton": "Сбросить последний маркер",
+        "resstyle": "Стиль результата:",
+        "Mosaic": "Мозайка",
+        "Transparency": "Прозрачность",
+        "styleparam": "Настройка стиля (степень прозрачности или количество элементов мозайки):",
+        "downJPEG": "Сохранить как jpeg",
+        "downGIF" :"Сохранить как gif"
+    }
+};
