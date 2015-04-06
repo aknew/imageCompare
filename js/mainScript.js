@@ -6,6 +6,8 @@ var iMouseX, iMouseY = 1;
 var theSelection;
 var resultParam = -1;
 
+var isMobileDevice =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 function drawImage(img) {
     var canvas = img.canvas;
     canvas.width = img.width;
@@ -273,17 +275,26 @@ $(function () {
     //     loadURL('imgurl2', img2)
     // }, false);
 
-    var dropZone = document.getElementById('drop_zone1');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img1);
-    }, false);
+    if(isMobileDevice){
+        document.getElementById('drop_zone1').style.display = "none";
+        document.getElementById('drop_zone2').style.display = "none";
+        document.getElementById('way_to_load1').style.display = "none";
+        document.getElementById('way_to_load2').style.display = "none";
+    }
+    else{
+       var dropZone = document.getElementById('drop_zone1');
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', function (e) {
+            handleFileDrop(e, img1);
+        }, false);
 
-    dropZone = document.getElementById('drop_zone2');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', function (e) {
-        handleFileDrop(e, img2);
-    }, false);
+        dropZone = document.getElementById('drop_zone2');
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', function (e) {
+            handleFileDrop(e, img2);
+        }, false); 
+    }
+
 
     var canvas1 = document.getElementById('canvas_img1');
 
