@@ -1,9 +1,0 @@
-New feauters:
-[] create animated gif with smooth transition from first image to second (I don't no is it possible or not)
-[] save proportion ( as option because if we can have photo with not perpendicular shooting angle )
-[] fine correction of markers
-[] float menu in right part of screen with parameters of result image and markers
-
-Bugfix:
-[] correct jpeg saves for url
-[] ie - wrong jpeg saving 
