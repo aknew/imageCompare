@@ -1,4 +1,3 @@
-//Working with selection based on http://www.script-tutorials.com/html5-image-crop-tool/
 // variables
 var canvas, ctx;
 var image;
@@ -21,7 +20,7 @@ function drawImage(img) {
     for (var i = 0; i < img.points.length; i++) {
         ctx.beginPath();
         ctx.fillStyle = colors[i];
-        ctx.arc(img.points[i].x, img.points[i].y, 10, 0, Math.PI * 2, true);
+        ctx.arc(img.points[i].x, img.points[i].y, 5, 0, Math.PI * 2, true);
 
         ctx.fill();
         ctx.closePath();
@@ -158,10 +157,11 @@ function tryDrawResult() {
                 );
 
 
-        style = document.getElementsByName("resultStyle");
+        var style = $("#resultStyle").val();
+        console.log(style);
         var useParam = resultParam<0 ? document.getElementById("resultParam").value : resultParam;
 
-        if (style[0].checked) {
+        if (style === "Mosaic") {
             //draw img2 with empty parts (like mosaic)
             rowCount = useParam * 10 + 5;
 
@@ -551,8 +551,8 @@ function loadBundles(lang) {
     $("#dropbutton1").val(translation["dropbutton"]);
     $("#dropbutton2").val(translation["dropbutton"]);
     $("#resstyle").text(translation["resstyle"]);
-    $("#Mosaic").text(translation["Mosaic"]);
-    $("#Transparency").text(translation["Transparency"]);
+    $('#resultStyle option[value="Mosaic"]').text(translation["Mosaic"]);
+    $('#resultStyle option[value="Transparency"]').text(translation["Transparency"]);
     $("#styleparam").text(translation["styleparam"]);
     $("#downJPEG").val(translation["downJPEG"]);
     $("#downGIF").val(translation["downGIF"]);

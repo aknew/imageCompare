@@ -18,3 +18,5 @@ Project has two branches:
 [Tabs with HTML5, CSS3 and jQuery](http://codepen.io/CesarGabriel/pen/tKaxq)
 
 [Save to GIF](https://github.com/antimatter15/jsgif)
+
+[Working with selection](http://www.script-tutorials.com/html5-image-crop-tool)
