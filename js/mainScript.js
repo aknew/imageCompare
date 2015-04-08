@@ -3,7 +3,7 @@ var canvas, ctx;
 var image;
 var iMouseX, iMouseY = 1;
 var theSelection;
-var resultParam = -1;
+var styleParam = -1;
 
 var isMobileDevice =  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -159,7 +159,7 @@ function tryDrawResult() {
 
         var style = $("#resultStyle").val();
         console.log(style);
-        var useParam = resultParam<0 ? document.getElementById("resultParam").value : resultParam;
+        var useParam = styleParam<0 ? document.getElementById("styleParam").value : styleParam;
 
         if (style === "Mosaic") {
             //draw img2 with empty parts (like mosaic)
@@ -500,13 +500,13 @@ function downloadGif() {
     encoder.start();
     encoder.setSize(theSelection.w, theSelection.h);
     
-    for (resultParam = 0; resultParam <= 1; resultParam += 0.1) {
+    for (styleParam = 0; styleParam <= 1; styleParam += 0.1) {
         drawScene();
         temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
         encoder.addFrame(temp_ctx);
     }
     
-    for (resultParam = 1; resultParam > 0; resultParam -= 0.1) {
+    for (styleParam = 1; styleParam > 0; styleParam -= 0.1) {
         drawScene();
         temp_ctx.drawImage(canvas, theSelection.x, theSelection.y, theSelection.w, theSelection.h, 0, 0, theSelection.w, theSelection.h);
         encoder.addFrame(temp_ctx);
@@ -516,7 +516,7 @@ function downloadGif() {
 
 
     theSelection.hidden = false;
-    resultParam = -1;
+    styleParam = -1;
     drawScene();
     var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
     var data_url = 'data:image/gif;base64,'+encode64(binary_gif);
@@ -553,7 +553,7 @@ function loadBundles(lang) {
     $("#resstyle").text(translation["resstyle"]);
     $('#resultStyle option[value="Mosaic"]').text(translation["Mosaic"]);
     $('#resultStyle option[value="Transparency"]').text(translation["Transparency"]);
-    $("#styleparam").text(translation["styleparam"]);
+    $("#styleParamLabel").text(translation["styleParamLabel"]);
     $("#downJPEG").val(translation["downJPEG"]);
     $("#downGIF").val(translation["downGIF"]);
 }
@@ -568,7 +568,7 @@ var translations = {
         "resstyle": "Result style:",
         "Mosaic": "Mosaic",
         "Transparency": "Transparency",
-        "styleparam": "Style parameter (alpha value or number of pieces in mosaic):",
+        "styleParamLabel": "Style parameter (alpha value or number of pieces in mosaic):",
         "downJPEG": "Save result as jpeg",
         "downGIF" :"Save result as gif"
     },
@@ -579,9 +579,9 @@ var translations = {
         "drop_zone": "Перетащите картинку сюда",
         "dropbutton": "Сбросить последний маркер",
         "resstyle": "Стиль результата:",
-        "Mosaic": "Мозайка",
+        "Mosaic": "Мозаика",
         "Transparency": "Прозрачность",
-        "styleparam": "Настройка стиля (степень прозрачности или количество элементов мозайки):",
+        "styleParamLabel": "Настройка стиля (степень прозрачности или количество элементов мозаики):",
         "downJPEG": "Сохранить как jpeg",
         "downGIF" :"Сохранить как gif"
     }
