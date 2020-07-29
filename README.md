@@ -11,7 +11,18 @@ Project has two branches:
 
 **master** - is uses on github.io, it contains some metrics also which isn't a part of current project actually. Maybe I will add some adverts to this branch in the future.
 
-## Used sources:
+[Workable online version](http://aknew.github.io/imageCompare/ImageComporation.html")
+
+[Disscusion on collectors' forum coins.su (in Russian)]("http://coins.su/forum/topic/122674-programmka-dlya-bystrogo-vyravnivaniyasravneniya-monet/)
+
+Also I have written an iOS version
+
+<p><a href="https://itunes.apple.com/us/app/image-superposition/id1226666996?mt=8" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg) no-repeat;width:135px;height:40px;background-size:contain;"></a></p>
+<iframe id="ytplayer" type="text/html" width="640" height="360"
+  src="https://www.youtube.com/embed//GvfVq6NqFiU"
+  frameborder="0"></iframe>
+
+### Used sources:
 
 [ualgebra.js](https://github.com/plainas/ualgebra.js) is used for solving equation system
 
