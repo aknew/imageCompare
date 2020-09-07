@@ -11,9 +11,9 @@ Project has two branches:
 
 **master** - is uses on github.io, it contains some metrics also which isn't a part of current project actually. Maybe I will add some adverts to this branch in the future.
 
-[Workable online version](http://aknew.github.io/imageCompare/ImageComporation.html")
+[Workable online version](http://aknew.github.io/imageCompare/ImageComporation.html)
 
-[Disscusion on collectors' forum coins.su (in Russian)]("http://coins.su/forum/topic/122674-programmka-dlya-bystrogo-vyravnivaniyasravneniya-monet/)
+[Disscusion on collectors' forum coins.su (in Russian)](http://coins.su/forum/topic/122674-programmka-dlya-bystrogo-vyravnivaniyasravneniya-monet/)
 
 Also I have written an iOS version
 
